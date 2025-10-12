@@ -1,0 +1,206 @@
+Overview
+
+This module covers passive and minimally active techniques to gather information about a target website: IP discovery, MTU/hop discovery with ping, crawling and URL harvesting (Photon), WHOIS/DNS lookups (CentralOps), web data extraction, site mirroring, automated reconnaissance (GRecon), and wordlist creation (CeWL). Example target used in the lab: certifiedhacker.com — replace with a domain you are authorized to test.
+
+Task 1 — Gathering Information Using ping
+
+Goal: Find target IP address, measure basic network stats, discover maximum ICMP payload before fragmentation, and infer hop counts (TTL).
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Open Command Prompt.
+
+Resolve IP and basic stats:
+
+ping www.certifiedhacker.com
+
+
+Note the resolved IP and ping statistics (packets sent/received/lost, RTT).
+
+Discover fragmentation (DF) behavior and maximum ICMP payload:
+
+ping www.certifiedhacker.com -f -l 1500
+
+
+-f sets "Don't Fragment" (DF) bit.
+
+-l sets payload size.
+If you see Packet needs to be fragmented but DF set, reduce -l until successful to determine the max payload (e.g., 1472 was successful, 1473 failed → MTU ~1500).
+
+Explore TTL to infer hop count:
+
+ping www.certifiedhacker.com -i 2 -n 1
+ping www.certifiedhacker.com -i 3 -n 1
+...
+
+
+Increase TTL (-i) until you receive a reply from the destination — the TTL value needed approximates hop count. Observe any TTL expired in transit responses from intermediate routers.
+
+Notes
+
+Some hosts/routers may block ICMP or rate-limit responses.
+
+ICMP-based MTU tests and TTL probing are minimally intrusive but may be logged.
+
+Task 2 — Crawling & URL Harvesting Using Photon
+
+Goal: Crawl target site to collect internal, external, and script URLs for mapping attack surface.
+
+Steps (Parrot OS / Linux)
+
+Log in to the Parrot OS VM and open a terminal.
+
+Become root if required:
+
+sudo su
+
+
+Navigate to Photon directory and run:
+
+cd Photon
+python3 photon.py -u http://www.certifiedhacker.com
+
+
+Results are saved under a folder named www.certifiedhacker.com inside the Photon directory. Typical output files: internal.txt, external.txt, scripts.txt.
+
+To include Wayback Machine URLs and adjust depth/threads:
+
+python3 photon.py -u http://www.certifiedhacker.com -l 3 -t 200 --wayback
+
+
+Inspect and triage collected URLs for sensitive endpoints, hidden files, and script sources.
+
+Notes
+
+Respect robots.txt and legal constraints for your engagement.
+
+Task 3 — Domain & DNS Lookups Using CentralOps
+
+Goal: Retrieve WHOIS, DNS records, and network information for the target domain.
+
+Steps
+
+Open a browser in Windows 11 VM and visit https://www.centralops.net/.
+
+Enter the domain (e.g., www.certifiedhacker.com) in the domain/IP lookup field and click Go.
+
+Review results such as:
+
+Address lookup
+
+Domain WHOIS record
+
+Network WHOIS and DNS records
+
+Record registrar, name servers, and any exposed subdomains or related hosts.
+
+Task 4 — Extracting Data Using Web Data Extractor
+
+Goal: Extract meta tags, emails, phones, URLs and other structured data from the website.
+
+Steps (Windows 11)
+
+Launch Web Data Extractor application.
+
+Create a new session and set the Starting URL to the target (e.g., https://certifiedhacker.com).
+
+Configure extraction options (Meta tags, Emails, Phones, URLs, etc.) and start the session.
+
+After completion, review tabs such as Meta tags and Emails. Export/save results as needed.
+
+Caveat
+
+Demo versions of tools may limit saved records.
+
+Collected email addresses should not be used for unsolicited contact.
+
+Task 5 — Mirroring a Site with HTTrack (WinHTTrack)
+
+Goal: Create a local copy of the website for offline analysis.
+
+Steps (Windows 11)
+
+Launch WinHTTrack Website Copier.
+
+Create a new project (e.g., Test Project) and select a base path for storage.
+
+Add the target URL (www.certifiedhacker.com) and click Set options... if needed.
+
+Configure scan rules (file types to include/exclude) and start the mirror.
+
+When mirroring finishes, use Browse Mirrored Website to view the local copy.
+
+Notes
+
+Respect site terms and bandwidth. Mirroring large sites can be resource-intensive and intrusive—get authorization.
+
+Task 6 — Automated Recon with GRecon
+
+Goal: Run GRecon for automated collection of subdomains, ports, services and basic footprinting info.
+
+Steps (Parrot OS)
+
+Open a terminal and become root:
+
+sudo su
+
+
+Navigate to GRecon and run:
+
+cd GRecon
+python3 grecon.py
+
+
+When prompted, set the target (e.g., certifiedhacker.com) and follow on-screen options to run modules and collect data.
+
+Task 7 — Generating Wordlists from the Target Using CeWL
+
+Goal: Create a custom wordlist from site content for password-guessing or wordlist enrichment.
+
+Steps (Parrot OS)
+
+Open a terminal and become root if required:
+
+sudo su
+
+
+Generate a wordlist:
+
+cewl -d 2 -m 5 https://www.certifiedhacker.com
+
+
+-d 2: depth 2
+
+-m 5: minimum word length 5
+
+To save directly to a file:
+
+cewl -w wordlist.txt -d 2 -m 5 https://www.certifiedhacker.com
+
+
+View the wordlist:
+
+pluma wordlist.txt
+
+
+Notes
+
+Use custom wordlists only during authorized testing; they may contain sensitive terms.
+
+Final Steps & Documentation
+
+Aggregate all findings: IPs, hostnames, URLs, exposed files, wordlists, service banners, OS guesses, and timestamps.
+
+Redact any sensitive personal data before adding screenshots to public repos.
+
+Save reports and include methodology, commands used, and proof of authorization for the engagement.
+
+Ethics, Legal & Safety Reminders
+
+Always obtain explicit written permission before performing active scanning, crawling, mirroring, or any intrusive actions.
+
+Passive OSINT is lower risk but still may violate terms of service or privacy expectations — proceed carefully.
+
+Do not use harvested contacts or credentials for unauthorized access or communication.

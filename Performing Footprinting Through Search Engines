@@ -1,0 +1,126 @@
+Performing Footprinting Through Search Engines
+
+Course: Certified Ethical Hacker v12
+Scope / Note: Only perform these techniques against systems you own or have explicit permission to test.
+
+Overview
+
+This hands‑on exercise demonstrates how to gather publicly available information about a target organization using search engines, video metadata tools, FTP search engines and IoT search engines. In the original lab the target is Intellipaat, but you may substitute any other target of your choice (with permission).
+
+Task 1 — Gathering Information Using Advanced Google Hacking Techniques
+
+Goal: Identify login pages, public documents, cached pages, and URLs related to the target.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser (Microsoft Edge used in lab).
+
+Navigate to https://www.google.com.
+
+In Google’s search bar, run:
+
+intitle:login site:intellipaat.com
+
+
+This uses Google advanced operators to restrict results to pages on intellipaat.com whose page titles contain the word login.
+
+Open results of interest to identify potential public login pages.
+
+To find publicly available PDFs:
+
+Intellipaat filetype:pdf
+
+
+Click any PDF link to view/download.
+
+Example useful advanced operators:
+
+cache: — view cached versions of a page
+Example: cache:www.intellipaat.com
+
+allinurl: — restrict results to pages containing all specified terms in the URL
+Example: allinurl:Intellipaat brochure
+
+inurl: — restrict results to pages containing a word in the URL
+Example: inurl:aws site:intellipaat.com
+
+allintitle: — restrict results to pages containing all specified terms in the title
+
+related: — find websites related to a given URL
+Example: related:www.eccouncil.org
+
+Task 2 — Gathering Information from Video Search Engines (YouTube)
+
+Goal: Extract metadata from videos associated with the target to find published dates, channel IDs, thumbnails and geolocation where available.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser and open https://www.youtube.com.
+
+Search for the target organization (e.g., Intellipaat) to list uploaded videos.
+
+Choose a video, right‑click the video title and select Copy link.
+
+Open https://mattw.io/youtube-metadata/ in a new tab.
+
+Paste the copied YouTube link into the “Submit a link or ID to a video, playlist, or channel” field and click Submit.
+
+Review the Snippet, Statistics, Geolocation, Status, and other fields for useful metadata (published date/time, channel id, title, view counts, etc.).
+
+Under Thumbnail, click Click to reverse image search to run a reverse image search for the thumbnail — this can reveal related images, or other usages of the thumbnail.
+
+Task 3 — Gathering Information from FTP Search Engines
+
+Goal: Locate publicly exposed FTP resources that might contain sensitive files.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser and open https://www.searchftps.net.
+
+In the search bar type a keyword (e.g., Microsoft) and click Search.
+
+Inspect results for critical files or documents related to the target. Download or note file paths for further analysis (only when authorized).
+
+Task 4 — Gathering Information from IoT Search Engines (Shodan)
+
+Goal: Discover IoT devices and services exposed publicly that are associated with the target organization or keywords of interest.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser and navigate to https://www.shodan.io.
+
+In Shodan’s search bar enter a keyword (e.g., Amazon) and press Enter.
+
+Review results for device details, countries, open ports, banners and version information that could indicate vulnerable services.
+
+Additional Notes & Best Practices
+
+Authorization: Always have written permission before scanning, crawling, or probing external systems. Publicly available information gathering (passive recon) is low risk, but active actions (scanning, fingerprinting) may still be considered intrusive.
+
+Documentation: For every finding, document: date/time, search query used, URL / resource location, and a short description of why it’s relevant.
+
+Sanitization: When publishing case studies or screenshots, redact any sensitive information (emails, API keys, full file contents).
+
+Caveats: Results depend on search engine indexing and privacy settings of the target. Use multiple operators and sources to reduce false negatives.
+
+Suggested repo structure
+my-cybersecurity-casestudies/
+├─ README.md
+├─ CASE_STUDY_1_Module_2.md   # <— paste this file here
+├─ screenshots/               # redacted screenshots (optional)
+├─ tools/                     # helper scripts (if any)
+└─ LICENSE
+
+Suggested README intro snippet
+# My Cybersecurity Case Studies
+
+This repository contains hands-on writeups and labs demonstrating information gathering, vulnerability analysis, and remediation workflows. All exercises were performed in controlled environments or on targets with explicit permission. Do not use these techniques for unauthorized testing.
+

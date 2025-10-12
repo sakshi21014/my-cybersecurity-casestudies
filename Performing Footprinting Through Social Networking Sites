@@ -1,0 +1,69 @@
+Performing Footprinting Through Social Networking Sites
+
+Course: Certified Ethical Hacker v12
+Scope / Note: Only perform these techniques against systems and people you own or have explicit written permission to test.
+
+Overview
+
+This hands‑on exercise demonstrates how to gather personnel and organization-related information from social networks and public profiles using OSINT tools. The lab uses Intellipaat as an example target; replace with an authorized target of your choice.
+
+Task 1 — Gathering Employees' Information from LinkedIn Using theHarvester
+
+Goal: Harvest names, email patterns and employee information exposed via LinkedIn.
+
+Steps (Parrot Security VM)
+
+Boot the Parrot Security VM and log in.
+
+Open the MATE terminal.
+
+Elevate privileges if required:
+
+sudo su
+
+
+Run theHarvester against the target domain using LinkedIn as the source:
+
+theHarvester -d eccouncil.org -l 200 -b linkedin
+
+
+-d domain to search
+
+-l number of results (limit)
+
+-b data source (linkedin)
+
+Review results for employee names, possible email patterns, and LinkedIn profile links. Validate findings before any contact or testing.
+
+Task 2 — Gathering Personal Information from Various Social Networking Sites Using Sherlock
+
+Goal: Locate user accounts across many social platforms to build an aggregate profile for OSINT and social‑engineering defense analysis.
+
+Steps (Parrot Security VM / local machine where Sherlock is installed)
+
+Log in to the Parrot Security VM and open a terminal (or use your local environment with Python3 and Sherlock installed).
+
+Run Sherlock against a username or full name:
+
+python3 sherlock.py "satya nadella"
+
+
+(Sherlock will enumerate many social sites and return URLs where the name/username exists.)
+
+Scroll through the results to collect relevant profile URLs.
+
+Inspect public profiles for DOB, employment history, location info, contact links, and other public details that could be useful for social engineering or targeted phishing tests.
+
+Document all findings with timestamps and source links.
+
+Risk, Ethics & Best Practices
+
+Authorization: Only collect personal data for authorized assessments. Do not misuse harvested data.
+
+Minimize Harm: Do not attempt to access private accounts or send unsolicited messages. Use gathered data only for defensive assessments or sanctioned engagements.
+
+Recordkeeping: For every finding note: date/time, tool, query, URL, and why it’s relevant.
+
+Sanitization for Publication: Redact or anonymize personal information and screenshots before adding to public repositories or portfolios.
+
+Validation: OSINT data can be noisy — validate identities before drawing conclusions.

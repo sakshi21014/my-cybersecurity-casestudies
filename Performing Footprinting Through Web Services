@@ -1,0 +1,126 @@
+Performing Footprinting Through Web Services
+
+Course: Certified Ethical Hacker v12
+Scope / Note: Only perform these techniques against systems and people you own or have explicit written permission to test.
+
+Overview
+
+This hands‑on exercise demonstrates passive reconnaissance using web services and OSINT tools. The original lab uses Intellipaat as the example target; replace with an authorized target of your choice.
+
+Task 1 — Finding the Company’s Domains and Subdomains Using Netcraft
+
+Goal: Identify domains, subdomains, hosting history, technology stack and network information.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser.
+
+Navigate to https://www.netcraft.com.
+
+Open the menu (top-right) → Resources → Research Tools.
+
+Click Site Report (“What’s that site running?”).
+
+Enter the target website URL (e.g., https://www.intellipaat.com) and click LOOK UP.
+
+Review the Site Report for:
+
+Background and company info
+
+Hosting history
+
+Infrastructure and technologies
+
+Network and netblock data
+
+In the Network section, click the domain link to view discovered subdomains and associated netblocks/OS details.
+
+Document discovered subdomains and relevant hosting details for later analysis.
+
+Task 2 — Gathering Personal Information Using PeekYou
+
+Goal: Collect publicly available personal information that could be used in social engineering or phishing.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch a browser and go to https://www.peekyou.com.
+
+In the search form enter a person’s First Name and Last Name and, if available, select Location (example used: Satya Nadella / Washington, DC).
+
+Click Search.
+
+Inspect the results for public records, background data, possible email addresses, contact info or address history.
+
+Use View Full Report (if present) for additional details.
+
+Record findings and consider sensitivity — do not publish personal, private, or sensitive data without consent.
+
+Task 3 — Gathering an Email List Using theHarvester
+
+Goal: Harvest email addresses and public data for the target from multiple sources.
+
+Steps (Parrot Security VM)
+
+Boot the Parrot Security VM and log in.
+
+Open a Terminal (MATE terminal).
+
+Elevate to root (if required):
+
+sudo su
+
+
+Run theHarvester (example using Baidu as source for up to 200 results):
+
+theHarvester -d microsoft.com -l 200 -b baidu
+
+
+-d specifies the domain
+
+-l sets the limit of results
+
+-b selects the data source (e.g., baidu, google, bing, linkedin, etc.)
+
+Review and export the results (theHarvester supports output options) for later validation.
+
+Validate harvested addresses before using them in any outreach or testing; misuse may be illegal.
+
+Task 4 — Gathering Information Using Deep and Dark Web Searching
+
+Goal: Search Tor/onion and dark web resources for relevant mentions, threat actor chatter, or leaked data.
+
+Steps
+
+Log in to the Windows 11 VM.
+
+Launch Tor Browser from the Tor Browser shortcut (e.g., C:\Users\Admin\Desktop\Tor Browser\Start Tor Browser).
+
+When Tor connects, use the browser for anonymous access to the dark web.
+
+As preliminary research, compare surface‑web results by searching the same query in a normal browser (Edge/Chrome) and in Tor to note differences in results and relevance.
+
+Use Tor to search for targeted keywords (e.g., “hackers for hire”, company name + “leak”, company name + “pastebin”) and document relevant findings.
+
+Note: Dark web searching can surface illegal marketplaces and sensitive content — do not engage in illegal activities. Record findings carefully and escalate appropriately.
+
+Task 5 — Determining Target OS Through Passive Footprinting (Censys)
+
+Goal: Use public internet‑scan data to infer host OS and other metadata via passive lookups.
+
+Steps
+
+Launch a browser (Firefox used in lab).
+
+Go to https://search.censys.io/?q=.
+
+In Censys search, enter the target website or host (e.g., www.eccouncil.org) and run the query.
+
+Click a host IP from the results to view the host page.
+
+Under Basic Information or host details, review discovered OS, services, and banners (example: OS may be listed as Ubuntu).
+
+Document IPs, OS guesses, and service versions for use in later authorized assessments.

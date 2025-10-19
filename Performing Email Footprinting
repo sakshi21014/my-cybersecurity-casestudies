@@ -1,0 +1,65 @@
+Performing Email Footprinting
+Hands-On 5 – Certified Ethical Hacker v12
+Author: Sakshi21014
+
+Objective
+In this task, I learned how to trace the origin of an email by analyzing its header using eMailTrackerPro.
+This helps in identifying where the email actually came from and is useful in detecting spam, phishing, or spoofing attempts.
+
+Tools Used
+
+Windows 11 Virtual Machine
+
+eMailTrackerPro
+
+Email account (Gmail, Outlook, etc.)
+
+Steps Performed
+
+Step 1: Installing eMailTrackerPro
+I logged in to the Windows 11 VM and started the eMailTrackerPro setup.
+I followed the default installation steps and, at the end, unchecked “Show Readme” before clicking Finish.
+The software launched automatically after installation.
+
+Step 2: Launching the Application
+After launching, an “Edition Selection” pop-up appeared where I clicked OK.
+Then the main dashboard of eMailTrackerPro opened.
+
+Step 3: Viewing Trace Reports
+From the View section, I clicked on My Trace Reports.
+This shows all the traced email headers and their results.
+
+Step 4: Starting a New Trace
+I clicked the Trace Headers icon under the New Email Trace section.
+Then I chose “Trace an email I have received” and copied the header of a suspicious email to paste it in the given field.
+
+Step 5: Getting Email Headers (Using Gmail)
+To find an email header in Gmail:
+
+Open the email.
+
+Click the three dots next to the reply icon.
+
+Select Show original.
+
+A new tab opens with all the technical details.
+
+I copied the entire email header from there.
+
+Step 6: Running the Trace
+After pasting the header into eMailTrackerPro, I clicked Trace.
+The tool analyzed the email and showed the sender’s route and location on a world map.
+
+Step 7: Checking the Results
+The map showed where the email likely came from.
+Below that, there was a table listing each hop (server) in the route with its IP address and location.
+On the right side, I could see an “Email Summary” with more details about the sender and ISP.
+
+Step 8: Viewing the Full Report
+By clicking View Report, I opened the complete trace report in the browser.
+It included details such as source and destination IPs, the route taken by the email, ISP and region information, and possible signs of spoofing or spam.
+
+Conclusion
+This lab helped me understand how to track and analyze an email’s journey using eMailTrackerPro.
+I learned how to find the sender’s real location, the IP addresses involved, and how to detect suspicious or fake emails.
+Email footprinting is an important skill for identifying phishing or malicious email sources in ethical hacking.

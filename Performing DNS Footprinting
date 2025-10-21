@@ -1,0 +1,113 @@
+Module 2 — Hands‑On 7: Performing DNS Footprinting
+
+Certified Ethical Hacker v12 Course
+
+Author: Sakshi Dubey
+
+I’ve written this module as a clear, step‑by‑step lab you can follow in the Windows 11 and Parrot Security OS environments. I kept the language practical and conversational — the way I would explain things to a teammate while we run the commands together.
+
+Task 1 — Gathering DNS information (nslookup & online tool)
+
+What we’re doing: Use nslookup locally and an online nslookup tool to gather DNS records and find the authoritative name servers.
+
+Why: DNS records reveal where a domain points, which servers handle email, and which name servers are authoritative — all useful for mapping an organization’s public footprint.
+
+Steps (Windows 11)
+
+Open Command Prompt and type:
+
+nslookup
+
+Press Enter. You’ll see the default DNS server and its IP (for example: dns.google 8.8.8.8).
+
+In nslookup’s interactive mode, set the query type to A (IPv4 address):
+
+set type=a
+
+Query the target domain:
+
+www.targetdomain.com
+
+This returns the IPv4 address for the domain (for example, 162.241.216.11). If the reply shows your local resolver (e.g., Google DNS) rather than the domain’s authoritative server, it’s a non‑authoritative answer.
+
+To find the domain’s canonical name (CNAME) and authoritatively discover the name server, run:
+
+set type=cname
+targetdomain.com
+
+You should see the authoritative name server listed (for example: ns1.bluehost.com) and possibly the mail admin host (dnsadmin.box5331.bluehost.com).
+
+To get the IP of the authoritative name server, switch back to A records and query the name server directly:
+
+set type=a
+ns1.bluehost.com
+
+Tip: If you can enumerate the primary name server and its IP, that server becomes an attractive target for DoS/DDoS or other attacks — handle this information responsibly.
+
+Use an online nslookup tool
+
+Open a browser and go to: http://www.kloth.net/services/nslookup.php.
+
+In the Domain field enter targetdomain.com, keep Query as A (IPv4 address) and click Look it up.
+
+Explore other query types from the dropdown (e.g., AAAA for IPv6, MX, NS). IPv6 queries are important because attacks can also target IPv6 infrastructure.
+
+Task 2 — Reverse DNS lookup (Reverse IP & dnsrecon)
+
+What we’re doing: Find other domains hosted on the same IP and run a reverse lookup for PTR records across an IP range.
+
+Why: Co‑hosted domains and PTR records help map shared infrastructure and identify additional assets.
+
+Steps (web + Parrot Security OS)
+
+Web method: Visit https://www.yougetsignal.com → Reverse IP Domain Check. Enter www.targetdomain.com and click Check. The tool lists other domains on the same server.
+
+CLI method (Parrot OS):
+
+Open a terminal, change into the dnsrecon directory:
+
+cd dnsrecon
+chmod +x ./dnsrecon.py
+./dnsrecon.py -r 162.241.216.0-162.241.216.255
+
+This searches for DNS PTR records within the specified IP range and can reveal hostnames assigned to each IP.
+
+Task 3 — Subdomain enumeration & DNS records (SecurityTrails)
+
+What we’re doing: Use SecurityTrails to collect current and historical DNS records plus discovered subdomains.
+
+Why: Historical DNS data and subdomains often reveal forgotten or legacy services that can be security blind spots.
+
+Steps
+
+In Windows 11, open a browser and go to https://securitytrails.com.
+
+Click Sign Up for Free, complete the registration and confirm your email.
+
+From the dashboard, enter targetdomain.com in the search field and press Enter.
+
+Review the DNS records tab — this shows A, AAAA, MX, NS, SOA, TXT and CNAME records.
+
+Check the Historical Data tab to see past values of A/AAAA/MX/NS/SOA/TXT records.
+
+Open the Subdomains tab to see discovered subdomains and related hosts.
+
+Responsible note: DNS and subdomain data can contain sensitive information. Use it for legitimate testing, reporting, and defensive work only.
+
+Short notes & recommendations
+
+Always record the exact commands you ran and the timestamps for repeatability.
+
+Treat authoritative name servers as sensitive infrastructure: enumerating them is part of reconnaissance, but attempting to disrupt them is unethical and illegal without explicit permission.
+
+Include IPv6 (AAAA) checks — many people miss IPv6 and attackers love forgotten IPv6 services.
+
+Contact
+
+If you need to follow up or include screenshots: support@example.com.
+
+© targetdomain — All rights reserved.
+
+Understood — and I’m sorry for missing that earlier. I’ve removed every occurrence of intellipaat from your document and replaced them with neutral placeholders (targetdomain.com, targetdomain) and updated the contact email to support@example.com.
+
+If you want different wording (for example your real target domain, your name, or your preferred support email), tell me which exact values to use and I’ll update it immediately.
